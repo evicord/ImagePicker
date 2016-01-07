@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="com.tyrion.plugin.picker" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+	<name>ImagePicker</name>
+	<js-module name="ImagePicker" src="www/ImagePicker.js">
+		<clobbers target="cordova.plugins.ImagePicker" />
+	</js-module>
+	<platform name="android">
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="ImagePicker">
+				<param name="android-package" value="com.tyrion.plugin.picker.ImagePicker" />
+			</feature>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+		    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+		    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+		    <uses-permission android:name="android.permission.CAMERA" />
+		    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+        </config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity
+            android:name="com.tyrion.plugin.picker.ui.LocalAlbum"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        	<activity android:name="com.tyrion.plugin.picker.ui.LocalAlbumDetail" />
+        </config-file>
+
+        <!-- java文件 -->
+		<source-file src="src/android/universal-image-loader-lib.jar" target-dir="libs"/>
+		<source-file src="src/android/android-support-v4.jar" target-dir="libs"/>
+		<source-file src="src/android/ImagePicker.java" target-dir="src/com/tyrion/plugin/picker" />
+		<source-file src="src/android/MyApplication.java" target-dir="src/com/tyrion/plugin/picker" />
+		<source-file src="src/android/AppManager.java" target-dir="src/com/tyrion/plugin/picker" />
+		<source-file src="src/android/common" target-dir="src/com/tyrion/plugin/picker" />
+		<source-file src="src/android/ui" target-dir="src/com/tyrion/plugin/picker" />
+		<source-file src="src/android/widget" target-dir="src/com/tyrion/plugin/picker" />
+
+		<!-- 资源文件 -->
+		<source-file src="src/android/res/anim" target-dir="res" />
+		<source-file src="src/android/res/drawable/picture_setting_album_checkbox.xml" target-dir="res/drawable" />
+		<source-file src="src/android/res/drawable/white_gray_bg_selector.xml" target-dir="res/drawable" />
+
+		<source-file src="src/android/res/drawable-xhdpi/album_finish.9.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/albumset_preselected.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/albumset_selected.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/back.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/btn_posts_camera_l.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/dangkr_no_picture_small.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/icon_back2.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/icon_go.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/post_add_pic.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/post_pager_delete.png" target-dir="res/drawable-xhdpi" />
+		<source-file src="src/android/res/drawable-xhdpi/progress_icon.png" target-dir="res/drawable-xhdpi" />
+
+		<source-file src="src/android/res/layout/item_album_pager.xml" target-dir="res/layout" />
+		<source-file src="src/android/res/layout/item_albumfoler.xml" target-dir="res/layout" />
+		<source-file src="src/android/res/layout/local_album_detail.xml" target-dir="res/layout" />
+		<source-file src="src/android/res/layout/local_album.xml" target-dir="res/layout" />
+		<source-file src="src/android/res/layout/simple_list_item.xml" target-dir="res/layout" />
+
+
+		<source-file src="src/android/res/values/standard_color.xml" target-dir="res/values" />
+		<source-file src="src/android/res/values/standard_dimens.xml" target-dir="res/values" />
+		<source-file src="src/android/res/values/styles.xml" target-dir="res/values" />
+		<source-file src="src/android/res/values/themes.xml" target-dir="res/values" />
+	</platform>
+	<platform name="ios">
+		<config-file parent="/*" target="config.xml">
+			<feature name="ImagePicker">
+				<param name="ios-package" value="ImagePicker" />
+			</feature>
+		</config-file>
+		<source-file src="src/ios/ImagePicker.m" />
+	</platform>
+</plugin>
