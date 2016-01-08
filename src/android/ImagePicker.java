@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+
+import com.tyrion.plugin.picker.common.ExtraKey;
 import com.tyrion.plugin.picker.common.ImageUtils;
 import com.tyrion.plugin.picker.common.LocalImageHelper;
 import com.tyrion.plugin.picker.ui.LocalAlbum;
@@ -17,6 +19,8 @@ import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.List;
 
 /**
@@ -31,7 +35,7 @@ public class ImagePicker extends CordovaPlugin {
         if (action.equals("getImage")) {
             callback = callbackContext;
 
-            int imageChoseCount = args.getInt(0);
+            ExtraKey.IMAGE_CHOSE_COUNT = args.getInt(0);
 
             Intent intent = new Intent(this.cordova.getActivity(), LocalAlbum.class);
             this.cordova.startActivityForResult(this, intent, ImageUtils.REQUEST_CODE_GETIMAGE_BYCROP);
@@ -53,29 +57,21 @@ public class ImagePicker extends CordovaPlugin {
 
             for (int i = 0; i < files.size(); i++) {
 
-                String  imageUri = files.get(i).getOriginalUri();
-                String imagePath = getFilePathFromUri(imageUri);
+                String originalUri = files.get(i).getOriginalUri();
+                String originalPath = getFilePathFromUri(originalUri);
+                int[] originalSize = getImageSize(originalPath);
+                JSONObject originalImage = new JSONObject();
+                originalImage.put("path", originalPath);
+                originalImage.put("width", originalSize[0]);
+                originalImage.put("height", originalSize[1]);
+                Log.e("originalUri", originalUri);
+                Log.e("originalPath", originalPath);
+                Log.e("originalSize", originalSize[0] + ":" + originalSize[1]);
 
-                /**
-                 * 把options.inJustDecodeBounds = true;
-                 * 这里再decodeFile()，返回的bitmap为空，但此时调用options.outHeight时，已经包含了图片的高了
-                 */
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeFile(imagePath, options); // 此时返回的bitmap为null
-                int width = options.outWidth;
-                int height = options.outHeight;
-//                Log.e("fileUri", imagePath);
-//                Log.e("fileUri", width + "");
-//                Log.e("fileUri", height + "");
-                JSONObject jsonObj = new JSONObject();
-                jsonObj.put("path", imagePath);
-                jsonObj.put("width", width);
-                jsonObj.put("height", height);
-                jsonarray.put(jsonObj);
+                jsonarray.put(originalImage);
+                Log.e("imageInfo", "==============================");
+
             }
-
-
             jsonString = jsonarray.toString();
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -103,5 +99,19 @@ public class ImagePicker extends CordovaPlugin {
 
         String img_path = actualimagecursor.getString(actual_image_column_index);
         return img_path;
+    }
+
+    private int[] getImageSize(String imagePath){
+        /**
+         * 把options.inJustDecodeBounds = true;
+         * 这里再decodeFile()，返回的bitmap为空，但此时调用options.outHeight时，已经包含了图片的高了
+         */
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagePath, options); // 此时返回的bitmap为null
+        int[] size = new int[2];
+        size[0] = options.outWidth;
+        size[1] = options.outHeight;
+        return size;
     }
 }
