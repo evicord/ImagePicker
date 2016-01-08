@@ -34,22 +34,25 @@ AndroidManifest.xml中<application>标签添加：
 	
 或者在自己工程的继承Application的类中添加：
 
+```
 	@Override
     public void onCreate() {
         super.onCreate();
         appContext = this;
         init();
     }
-    
+
     private void init() {
         initImageLoader(getApplicationContext());
+        //本地图片辅助类初始化
         LocalImageHelper.init(this);
         if (display == null) {
-            WindowManager windowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+            WindowManager windowManager = (WindowManager)
+                    getSystemService(Context.WINDOW_SERVICE);
             display = windowManager.getDefaultDisplay();
         }
     }
-    
+
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
         config.threadPriority(Thread.NORM_PRIORITY);
@@ -58,6 +61,7 @@ AndroidManifest.xml中<application>标签添加：
         config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
         config.diskCacheSize(100 * 1024 * 1024); // 100 MiB
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
+        //修改连接超时时间5秒，下载超时时间5秒
         config.imageDownloader(new BaseImageDownloader(appContext, 5 * 1000, 5 * 1000));
         ImageLoader.getInstance().init(config.build());
     }
@@ -72,10 +76,23 @@ AndroidManifest.xml中<application>标签添加：
             cacheDir.mkdirs();
         return cacheDir.getAbsolutePath();
     }
-    
+
+    public int getWindowWidth() {
+        return display.getWidth();
+    }
+
+    public int getWindowHeight() {
+        return display.getHeight();
+    }
+
+    public int getHalfWidth() {
+        return display.getWidth() / 2;
+    }
+
     public int getQuarterWidth() {
         return display.getWidth() / 4;
     }
+```    
     
 ### 3.使用方法
 1).  传入参数：
@@ -111,7 +128,7 @@ AndroidManifest.xml中<application>标签添加：
 		"getImage",
 		[imageAmount]
 	);
-	
+				
 3).  返回值
 以Json字符串的形式返回数据，格式如下：
 
