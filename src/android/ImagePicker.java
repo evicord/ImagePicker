@@ -5,10 +5,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
 import com.tyrion.plugin.picker.common.ExtraKey;
+import com.tyrion.plugin.picker.common.ImageCompressFactory;
 import com.tyrion.plugin.picker.common.ImageUtils;
 import com.tyrion.plugin.picker.common.LocalImageHelper;
 import com.tyrion.plugin.picker.ui.LocalAlbum;
@@ -20,6 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
 import java.util.List;
 
@@ -32,7 +36,7 @@ public class ImagePicker extends CordovaPlugin {
     CallbackContext callback;
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("getImage")) {
+        if (action.equals("getPictures")) {
             callback = callbackContext;
 
             ExtraKey.IMAGE_CHOSE_COUNT = args.getInt(0);
@@ -69,6 +73,10 @@ public class ImagePicker extends CordovaPlugin {
                 Log.e("originalSize", originalSize[0] + ":" + originalSize[1]);
 
                 jsonarray.put(originalImage);
+//                ImageCompressFactory imageCompressFactory = new ImageCompressFactory();
+//                imageCompressFactory.ratioAndGenThumb(originalPath,
+//                        Environment.getExternalStorageDirectory() + File.separator + "PanArt/" + getFileName(originalPath) + ".jpg",
+//                        ExtraKey.IMAGE_MAX_SIZE, ExtraKey.IMAGE_MAX_SIZE, false);
                 Log.e("imageInfo", "==============================");
 
             }
@@ -77,7 +85,7 @@ public class ImagePicker extends CordovaPlugin {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        Log.e("jsonString", jsonString);
+//        Log.e("jsonString", jsonString);
         callback.success(jsonString);
         //清空选中的图片
         files.clear();
@@ -100,6 +108,18 @@ public class ImagePicker extends CordovaPlugin {
 
         String img_path = actualimagecursor.getString(actual_image_column_index);
         return img_path;
+    }
+
+    private String getFileName(String pathandname){
+
+        int start=pathandname.lastIndexOf("/");
+        int end=pathandname.lastIndexOf(".");
+        if(start!=-1 && end!=-1){
+            return pathandname.substring(start+1,end);
+        }else{
+            return null;
+        }
+
     }
 
     private int[] getImageSize(String imagePath){
