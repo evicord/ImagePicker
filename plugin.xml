@@ -67,11 +67,37 @@
 		<source-file src="src/android/res/values/themes.xml" target-dir="res/values" />
 	</platform>
 	<platform name="ios">
-		<config-file parent="/*" target="config.xml">
-			<feature name="ImagePicker">
-				<param name="ios-package" value="ImagePicker" />
-			</feature>
-		</config-file>
-		<source-file src="src/ios/ImagePicker.m" />
+        <config-file target="config.xml" parent="/*">
+            <feature name="ImagePicker">
+                <param name="ios-package" value="SOSPicker"/>
+            </feature>
+        </config-file>
+        
+        <header-file src="src/ios/SOSPicker.h" />
+        <source-file src="src/ios/SOSPicker.m" />
+        
+        <header-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.m" />
+        
+        <header-file src="src/ios/ELCImagePicker/ELCAsset.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCAsset.m" />
+        
+        <header-file src="src/ios/ELCImagePicker/ELCAssetCell.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCAssetCell.m" />
+        
+        <header-file src="src/ios/ELCImagePicker/ELCAssetPickerFilterDelegate.h" />
+        <header-file src="src/ios/ELCImagePicker/ELCAssetSelectionDelegate.h" />
+        
+        <header-file src="src/ios/ELCImagePicker/ELCAssetTablePicker.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCAssetTablePicker.m" />
+        
+        <header-file src="src/ios/ELCImagePicker/ELCImagePickerController.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCImagePickerController.m" />
+        
+        <resource-file src="src/ios/ELCImagePicker/Resources/ELCAlbumPickerController.xib" />
+        <resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetPicker.xib" />
+        <resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetTablePicker.xib" />
+        <resource-file src="src/ios/ELCImagePicker/Resources/Overlay.png" />
+        <resource-file src="src/ios/ELCImagePicker/Resources/Overlay@2x.png" />
 	</platform>
 </plugin>
