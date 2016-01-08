@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -79,8 +80,10 @@ public class ImageCompressFactory {
             be = newOpts.outHeight / hh;
         }
 //        Log.e("be", be + " = " + newOpts.outWidth+ " / " + ww);
-        if (be <= 0) be = 1;
-        newOpts.inSampleSize = (int)be;//设置缩放比例
+        int int_be = new BigDecimal(be).setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+//        Log.e("(int)be", int_be + "");
+        if (int_be <= 0) int_be = 1;
+        newOpts.inSampleSize = int_be;//设置缩放比例
         // 开始压缩图片，注意此时已经把options.inJustDecodeBounds 设回false了
         bitmap = BitmapFactory.decodeFile(imgPath, newOpts);
         // 压缩好比例大小后再进行质量压缩

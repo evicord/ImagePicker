@@ -73,16 +73,18 @@ public class ImagePicker extends CordovaPlugin {
                 Log.e("originalSize", originalSize[0] + ":" + originalSize[1]);
 
                 jsonarray.put(originalImage);
-//                ImageCompressFactory imageCompressFactory = new ImageCompressFactory();
-//                imageCompressFactory.ratioAndGenThumb(originalPath,
-//                        Environment.getExternalStorageDirectory() + File.separator + "PanArt/" + getFileName(originalPath) + ".jpg",
-//                        ExtraKey.IMAGE_MAX_SIZE, ExtraKey.IMAGE_MAX_SIZE, false);
+                ImageCompressFactory imageCompressFactory = new ImageCompressFactory();
+                imageCompressFactory.ratioAndGenThumb(originalPath,
+                        Environment.getExternalStorageDirectory() + File.separator + "PanArt/" + getFileName(originalPath) + ".jpg",
+                        ExtraKey.IMAGE_MAX_SIZE, ExtraKey.IMAGE_MAX_SIZE, false);
                 Log.e("imageInfo", "==============================");
 
             }
             jsonString = jsonarray.toString();
         } catch (JSONException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 //        Log.e("jsonString", jsonString);
