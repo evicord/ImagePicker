@@ -22,7 +22,9 @@ public class MyApplication extends Application {
     private static MyApplication appContext = null;
     private Display display;
 
-
+    public static MyApplication getInstance() {
+        return appContext;
+    }
 
     @Override
     public void onCreate() {
@@ -31,13 +33,6 @@ public class MyApplication extends Application {
         init();
     }
 
-    public static MyApplication getInstance() {
-        return appContext;
-    }
-
-    /**
-     * 初始化
-     */
     private void init() {
         initImageLoader(getApplicationContext());
         //本地图片辅助类初始化
@@ -49,7 +44,6 @@ public class MyApplication extends Application {
         }
     }
 
-
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
         config.threadPriority(Thread.NORM_PRIORITY);
@@ -60,8 +54,6 @@ public class MyApplication extends Application {
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
         //修改连接超时时间5秒，下载超时时间5秒
         config.imageDownloader(new BaseImageDownloader(appContext, 5 * 1000, 5 * 1000));
-        //		config.writeDebugLogs(); // Remove for release app
-        // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
     }
 
@@ -76,34 +68,18 @@ public class MyApplication extends Application {
         return cacheDir.getAbsolutePath();
     }
 
-    /**
-     * @return
-     * @Description： 获取当前屏幕的宽度
-     */
     public int getWindowWidth() {
         return display.getWidth();
     }
 
-    /**
-     * @return
-     * @Description： 获取当前屏幕的高度
-     */
     public int getWindowHeight() {
         return display.getHeight();
     }
 
-    /**
-     * @return
-     * @Description： 获取当前屏幕一半宽度
-     */
     public int getHalfWidth() {
         return display.getWidth() / 2;
     }
 
-    /**
-     * @return
-     * @Description： 获取当前屏幕1/4宽度
-     */
     public int getQuarterWidth() {
         return display.getWidth() / 4;
     }

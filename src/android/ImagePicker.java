@@ -77,6 +77,7 @@ public class ImagePicker extends CordovaPlugin {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        Log.e("jsonString", jsonString);
         callback.success(jsonString);
         //清空选中的图片
         files.clear();

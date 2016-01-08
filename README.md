@@ -26,3 +26,109 @@
 
     git clone https://github.com/evicord/ImagePicker.git
     cordova plugin add $IMAGE_CROPPER_PLUGIN_DIR
+    
+2). Android原生改动
+AndroidManifest.xml中<application>标签添加：
+	
+	android:name="com.tyrion.plugin.picker.MyApplication"
+	
+或者在自己工程的继承Application的类中添加：
+
+	@Override
+    public void onCreate() {
+        super.onCreate();
+        appContext = this;
+        init();
+    }
+    
+    private void init() {
+        initImageLoader(getApplicationContext());
+        LocalImageHelper.init(this);
+        if (display == null) {
+            WindowManager windowManager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
+            display = windowManager.getDefaultDisplay();
+        }
+    }
+    
+    public static void initImageLoader(Context context) {
+        ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
+        config.threadPriority(Thread.NORM_PRIORITY);
+        config.denyCacheImageMultipleSizesInMemory();
+        config.memoryCacheSize((int) Runtime.getRuntime().maxMemory() / 4);
+        config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
+        config.diskCacheSize(100 * 1024 * 1024); // 100 MiB
+        config.tasksProcessingOrder(QueueProcessingType.LIFO);
+        config.imageDownloader(new BaseImageDownloader(appContext, 5 * 1000, 5 * 1000));
+        ImageLoader.getInstance().init(config.build());
+    }
+
+    public String getCachePath() {
+        File cacheDir;
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+            cacheDir = getExternalCacheDir();
+        else
+            cacheDir = getCacheDir();
+        if (!cacheDir.exists())
+            cacheDir.mkdirs();
+        return cacheDir.getAbsolutePath();
+    }
+    
+    public int getQuarterWidth() {
+        return display.getWidth() / 4;
+    }
+    
+### 3.使用方法
+1).  传入参数：
+
+	imageAmount 可选图片总数，int型
+
+2).  调用方法
+
+方法一： 通过中间层js文件调用
+	
+	document.addEventListener('deviceready', function() {
+                var location = cordova.require('com.tyrion.plugin.picker.ImagePicker');
+                location.getImage(imageAmount,
+                    function(message) {
+                        //这里处理成功回调的数据
+                    },
+                    function(message) {
+                        //处理失败的情况
+                    }
+                );
+            });
+	
+方法二：直接调用native方法
+
+	cordova.exec(
+		function(successData) {
+			//这里处理成功回调的数据
+		},
+		function(failedData) {
+			//处理失败的情况
+		},
+		"ImagePicker",
+		"getImage",
+		[imageAmount]
+	);
+	
+3).  返回值
+以Json字符串的形式返回数据，格式如下：
+
+	[ /* Json数组的方式返回每张图片信息 */
+    	{ 
+        	"path":"/storage/extSdCard/image/001.jpg",
+        	"height":960,
+        	"width":1080
+    	},
+    	{
+        	"path":"/storage/extSdCard/image/002.jpg",
+        	"height":960,
+        	"width":1080
+    	},
+    	{
+        	"path":"/storage/extSdCard/image/003.jpg",
+        	"height":960,
+        	"width":1080
+    	}
+	]
