@@ -40,6 +40,14 @@
 #pragma mark - preview
 -(void)preview:(id)sender
 {
+    [self.photoArray removeAllObjects];
+    for (ELCAsset *elcAsset in self.elcAssets) {
+        if ([elcAsset selected]) {
+            ALAssetRepresentation* representation = [elcAsset.asset defaultRepresentation];
+            NSString *file_path=representation.url.absoluteString;
+            [self.photoArray addObject:[MWPhoto photoWithURL:[NSURL URLWithString:file_path]]];
+        }
+    }
     // Create browser
     MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
     browser.displayActionButton = NO;
@@ -77,9 +85,6 @@
             
             if (!isAssetFiltered) {
                 [self.elcAssets addObject:elcAsset];
-                ALAssetRepresentation* representation = [elcAsset.asset defaultRepresentation];
-                NSString *file_path=representation.url.absoluteString;
-                [self.photoArray addObject:[MWPhoto photoWithURL:[NSURL URLWithString:file_path]]];
             }
             
         }];
@@ -108,7 +113,8 @@
     
     self.columns = SCREEN_WIDTH / 80.0f;
     self.photoArray=[NSMutableArray array];
-
+    [self BtnsEnable:NO];
+    
     self.lineHeight.constant=1.0/SCREEN_SCALE;
     self.count_label.layer.cornerRadius = self.count_label.bounds.size.width/2.0f;
     self.count_label.clipsToBounds = YES;
@@ -136,7 +142,15 @@
     // Do any additional setup after loading the view.
 }
 
-
+-(void)BtnsEnable:(BOOL)enable
+{
+    if(self.finish.enabled!=enable)
+    {
+     self.finish.enabled=enable;
+     self.preview.enabled=enable;
+     self.count_label.hidden=enable?NO:YES;
+    }
+}
 
 -(void)cancel
 {
@@ -149,7 +163,6 @@
 - (void)finish:(id)sender
 {
     NSMutableArray *selectedAssetsImages = [[NSMutableArray alloc] init];
-    
     for (ELCAsset *elcAsset in self.elcAssets) {
         if ([elcAsset selected]) {
             [selectedAssetsImages addObject:[elcAsset asset]];
@@ -186,11 +199,14 @@
 
 - (void)assetSelected:(ELCAsset *)asset
 {
+    [self BtnsEnable:YES];
      self.count_label.text=[NSString stringWithFormat:@"%ld",(long)[self totalSelectedAssets]];
 }
 
 - (void)assetdeSelected:(ELCAsset *)asset
 {
+    BOOL isEnable=[self totalSelectedAssets]==0?NO:YES;
+    [self BtnsEnable:isEnable];
     self.count_label.text=[NSString stringWithFormat:@"%ld",(long)[self totalSelectedAssets]];
 }
 
