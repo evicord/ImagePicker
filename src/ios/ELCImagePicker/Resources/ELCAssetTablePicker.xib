@@ -8,6 +8,8 @@
             <connections>
                 <outlet property="count_label" destination="YkK-QV-bcG" id="j48-vq-izn"/>
                 <outlet property="finish" destination="wFW-dq-5xK" id="wM8-cb-h1u"/>
+                <outlet property="line" destination="zdy-uK-4WZ" id="EXi-cd-MaI"/>
+                <outlet property="lineHeight" destination="9YY-5V-2Sa" id="5AB-lA-1l6"/>
                 <outlet property="preview" destination="HYQ-et-BBI" id="l2G-QK-iBS"/>
                 <outlet property="tableView" destination="tda-Qk-uWO" id="h3K-R1-1JB"/>
                 <outlet property="view" destination="iN0-l3-epB" id="1IB-hY-Bwp"/>
@@ -19,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tda-Qk-uWO" userLabel="table">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="552"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQc-1U-wxy" userLabel="bottom">
@@ -61,15 +63,25 @@
                         <constraint firstAttribute="trailing" secondItem="wFW-dq-5xK" secondAttribute="trailing" constant="10" id="zor-KS-yrb"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zdy-uK-4WZ" userLabel="line">
+                    <rect key="frame" x="0.0" y="551" width="600" height="1"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="9YY-5V-2Sa"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="tda-Qk-uWO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="88K-HJ-B7g"/>
+                <constraint firstItem="zdy-uK-4WZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CAf-Rb-qAO"/>
+                <constraint firstAttribute="trailing" secondItem="zdy-uK-4WZ" secondAttribute="trailing" id="EgW-4A-ukd"/>
                 <constraint firstAttribute="trailing" secondItem="eQc-1U-wxy" secondAttribute="trailing" id="Ntn-rW-Qno"/>
                 <constraint firstItem="tda-Qk-uWO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="UbY-ui-vTr"/>
                 <constraint firstItem="eQc-1U-wxy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="X1k-cY-a6d"/>
+                <constraint firstItem="zdy-uK-4WZ" firstAttribute="top" secondItem="tda-Qk-uWO" secondAttribute="bottom" id="Xdo-il-GmI"/>
                 <constraint firstAttribute="trailing" secondItem="tda-Qk-uWO" secondAttribute="trailing" id="kEy-5T-eNi"/>
-                <constraint firstItem="eQc-1U-wxy" firstAttribute="top" secondItem="tda-Qk-uWO" secondAttribute="bottom" id="yuG-wB-Gff"/>
+                <constraint firstItem="eQc-1U-wxy" firstAttribute="top" secondItem="zdy-uK-4WZ" secondAttribute="bottom" id="zIG-Zw-6EL"/>
                 <constraint firstAttribute="bottom" secondItem="eQc-1U-wxy" secondAttribute="bottom" id="zfZ-Ko-hQY"/>
             </constraints>
             <point key="canvasLocation" x="126" y="358"/>
