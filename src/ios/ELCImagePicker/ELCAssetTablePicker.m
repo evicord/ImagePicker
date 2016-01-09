@@ -11,16 +11,58 @@
 #import "ELCAssetCell.h"
 #import "ELCAlbumPickerController.h"
 #import "ELCImagePickerController.h"
-
-@interface ELCAssetTablePicker ()<UITableViewDataSource,UITableViewDelegate,ELCAssetDelegate>
+#import "MWPhotoBrowser.h"
+@interface ELCAssetTablePicker ()<UITableViewDataSource,UITableViewDelegate,ELCAssetDelegate,MWPhotoBrowserDelegate>
 @property (nonatomic, assign) NSInteger columns;
 @property (nonatomic, strong) NSMutableArray *elcAssets;
+@property (nonatomic, strong) NSMutableArray *photoArray;
 @end
 
 
 @implementation ELCAssetTablePicker
 
+#pragma mark - MWPhotoBrowserDelegate
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
+    return self.photoArray.count;
+}
 
+- (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
+    if (index < self.photoArray.count)
+        return [self.photoArray objectAtIndex:index];
+    return nil;
+}
+
+- (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
+    // If we subscribe to this method we must dismiss the view controller ourselves
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - preview
+-(void)preview:(id)sender
+{
+    [self.photoArray removeAllObjects];
+    for (ELCAsset *elcAsset in self.elcAssets) {
+        if ([elcAsset selected]) {
+            ALAssetRepresentation* representation = [elcAsset.asset defaultRepresentation];
+            NSString *file_path=representation.url.absoluteString;
+            [self.photoArray addObject:[MWPhoto photoWithURL:[NSURL URLWithString:file_path]]];
+        }
+    }
+    // Create browser
+    MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+    browser.displayActionButton = NO;
+    browser.displayNavArrows = NO;
+    browser.displaySelectionButtons = NO;
+    browser.alwaysShowControls = NO;
+    browser.zoomPhotosToFill = YES;
+    browser.enableGrid = NO;
+    browser.startOnGrid = NO;
+    browser.enableSwipeToDismiss = NO;
+    [browser setCurrentPhotoIndex:0];
+    [self.navigationController pushViewController:browser animated:YES];
+}
+
+#pragma mark - preparePhotos
 - (void)preparePhotos
 {
     @autoreleasepool {
@@ -65,12 +107,15 @@
 }
 
 
-
+#pragma mark - viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.columns = SCREEN_WIDTH / 80.0f;
+    self.photoArray=[NSMutableArray array];
+    [self BtnsEnable:NO];
     
+    self.lineHeight.constant=1.0/SCREEN_SCALE;
     self.count_label.layer.cornerRadius = self.count_label.bounds.size.width/2.0f;
     self.count_label.clipsToBounds = YES;
     self.count_label.backgroundColor = [UIColor blackColor];
@@ -89,6 +134,7 @@
     self.navigationItem.rightBarButtonItem = cancelItem;
 
     [self.finish addTarget:self action:@selector(finish:) forControlEvents:UIControlEventTouchUpInside];
+    [self.preview addTarget:self action:@selector(preview:) forControlEvents:UIControlEventTouchUpInside];
     
     [self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
     
@@ -96,7 +142,15 @@
     // Do any additional setup after loading the view.
 }
 
-
+-(void)BtnsEnable:(BOOL)enable
+{
+    if(self.finish.enabled!=enable)
+    {
+     self.finish.enabled=enable;
+     self.preview.enabled=enable;
+     self.count_label.hidden=enable?NO:YES;
+    }
+}
 
 -(void)cancel
 {
@@ -109,7 +163,6 @@
 - (void)finish:(id)sender
 {
     NSMutableArray *selectedAssetsImages = [[NSMutableArray alloc] init];
-    
     for (ELCAsset *elcAsset in self.elcAssets) {
         if ([elcAsset selected]) {
             [selectedAssetsImages addObject:[elcAsset asset]];
@@ -146,11 +199,14 @@
 
 - (void)assetSelected:(ELCAsset *)asset
 {
+    [self BtnsEnable:YES];
      self.count_label.text=[NSString stringWithFormat:@"%ld",(long)[self totalSelectedAssets]];
 }
 
 - (void)assetdeSelected:(ELCAsset *)asset
 {
+    BOOL isEnable=[self totalSelectedAssets]==0?NO:YES;
+    [self BtnsEnable:isEnable];
     self.count_label.text=[NSString stringWithFormat:@"%ld",(long)[self totalSelectedAssets]];
 }
 

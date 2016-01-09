@@ -76,6 +76,94 @@
         <header-file src="src/ios/SOSPicker.h" />
         <source-file src="src/ios/SOSPicker.m" />
         
+        <header-file src="src/ios/MBProgressHUD/MBProgressHUD.h" />
+        <source-file src="src/ios/MBProgressHUD/MBProgressHUD.m" />
+        <header-file src="src/ios/MBProgressHUD/MBProgressHUD+Add.h" />
+        <source-file src="src/ios/MBProgressHUD/MBProgressHUD+Add.m" />
+        
+        
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWCaptionView.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Classes/MWCaptionView.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWCommon.h" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWGridCell.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Classes/MWGridCell.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWGridViewController.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Classes/MWGridViewController.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWPhoto.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Classes/MWPhoto.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWPhotoBrowser.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Classes/MWPhotoBrowser.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWPhotoBrowserPrivate.h" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWPhotoProtocol.h" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWTapDetectingImageView.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Classes/MWTapDetectingImageView.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWTapDetectingView.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Classes/MWTapDetectingView.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Classes/MWZoomingScrollView.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Classes/MWZoomingScrollView.m" />
+        
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/DACircularProgress/DACircularProgressView.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/DACircularProgress/DACircularProgressView.m" />
+        
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDImageCache.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDImageCache.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageCompat.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageCompat.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageDecoder.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageDecoder.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageDownloader.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageDownloader.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageDownloaderOperation.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageDownloaderOperation.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageManager.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageManager.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImageOperation.h" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImagePrefetcher.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/EMSDWebImagePrefetcher.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/NSData+EMImageContentType.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/NSData+EMImageContentType.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIButton+EMWebCache.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIButton+EMWebCache.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImage+EMGIF.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImage+EMGIF.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImage+EMMultiFormat.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImage+EMMultiFormat.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImage+EMWebP.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImage+EMWebP.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImageView+EMHighlightedWebCache.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImageView+EMHighlightedWebCache.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIView+EMWebCacheOperation.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIView+EMWebCacheOperation.m" />
+        
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/NSIndexPath+PSTCollectionViewAdditions.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/NSIndexPath+PSTCollectionViewAdditions.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionView.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionView.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewCell.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewCell.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewCommon.h" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewController.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewController.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewData.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewData.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewFlowLayout.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewFlowLayout.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewItemKey.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewItemKey.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewLayout.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewLayout.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewLayout+Internals.h" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewUpdateItem.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTCollectionViewUpdateItem.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTGridLayoutInfo.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTGridLayoutInfo.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTGridLayoutItem.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTGridLayoutItem.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTGridLayoutRow.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTGridLayoutRow.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTGridLayoutSection.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/PSTGridLayoutSection.m" />
+        
         <header-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.h" />
         <source-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.m" />
         
