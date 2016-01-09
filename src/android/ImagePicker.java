@@ -2,17 +2,17 @@ package com.tyrion.plugin.picker;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.tyrion.plugin.picker.compress.CompressAsyncTask;
 import com.tyrion.plugin.picker.common.ExtraKey;
-import com.tyrion.plugin.picker.common.ImageCompressFactory;
+import com.tyrion.plugin.picker.compress.ImageInfo;
 import com.tyrion.plugin.picker.common.ImageUtils;
 import com.tyrion.plugin.picker.common.LocalImageHelper;
+import com.tyrion.plugin.picker.compress.OnCompressListener;
 import com.tyrion.plugin.picker.ui.LocalAlbum;
 
 import org.apache.cordova.CordovaPlugin;
@@ -20,11 +20,8 @@ import org.apache.cordova.CallbackContext;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,38 +54,42 @@ public class ImagePicker extends CordovaPlugin {
 
         JSONArray jsonarray = new JSONArray();
         String jsonString = null;
-        try {
+        List<ImageInfo> images = new ArrayList<ImageInfo>();
 
-            for (int i = 0; i < files.size(); i++) {
+        for (int i = 0; i < files.size(); i++){
+            ImageInfo image = new ImageInfo();
+            String originalUri = files.get(i).getOriginalUri();
+            String originalPath = getFilePathFromUri(originalUri);
+            int[] originalSize = getImageSize(originalPath);
 
-                String originalUri = files.get(i).getOriginalUri();
-                String originalPath = getFilePathFromUri(originalUri);
-                int[] originalSize = getImageSize(originalPath);
-                JSONObject originalImage = new JSONObject();
-                originalImage.put("path", originalPath);
-                originalImage.put("width", originalSize[0]);
-                originalImage.put("height", originalSize[1]);
-                Log.e("originalUri", originalUri);
-                Log.e("originalPath", originalPath);
-                Log.e("originalSize", originalSize[0] + ":" + originalSize[1]);
-
-                jsonarray.put(originalImage);
-                ImageCompressFactory imageCompressFactory = new ImageCompressFactory();
-                imageCompressFactory.ratioAndGenThumb(originalPath,
-                        Environment.getExternalStorageDirectory() + File.separator + "PanArt/" + getFileName(originalPath) + ".jpg",
-                        ExtraKey.IMAGE_MAX_SIZE, ExtraKey.IMAGE_MAX_SIZE, false);
-                Log.e("imageInfo", "==============================");
-
-            }
-            jsonString = jsonarray.toString();
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            image.setPath(originalPath);
+            image.setWidth(originalSize[0]);
+            image.setHeight(originalSize[1]);
+            images.add(image);
         }
-//        Log.e("jsonString", jsonString);
-        callback.success(jsonString);
+
+        CompressAsyncTask imageCompressTask = new CompressAsyncTask();
+        imageCompressTask.setOnCompressListener(new OnCompressListener() {
+            @Override
+            public void onCompressSucceed(String jsonString) {
+                Log.e("onCompressSucceed", jsonString);
+                callback.success(jsonString);
+            }
+
+            @Override
+            public void onCompressProcess(String jsonString) {
+                Log.e("onCompressProcess", jsonString);
+                callback.success(jsonString);
+            }
+
+            @Override
+            public void onCompressFailed() {
+                Log.e("onCompressSucceed", "");
+                callback.success("");
+            }
+        });
+        imageCompressTask.execute(images);
+
         //清空选中的图片
         files.clear();
 
