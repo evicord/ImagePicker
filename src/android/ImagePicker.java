@@ -18,6 +18,7 @@ import com.tyrion.plugin.picker.ui.LocalAlbum;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 
+import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -35,7 +36,6 @@ public class ImagePicker extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("getPictures")) {
             callback = callbackContext;
-
             ExtraKey.IMAGE_CHOSE_COUNT = args.getInt(0);
 
             Intent intent = new Intent(this.cordova.getActivity(), LocalAlbum.class);
@@ -72,20 +72,26 @@ public class ImagePicker extends CordovaPlugin {
         imageCompressTask.setOnCompressListener(new OnCompressListener() {
             @Override
             public void onCompressSucceed(String jsonString) {
-                Log.e("onCompressSucceed", jsonString);
-                callback.success(jsonString);
+//                Log.e("onCompressSucceed", jsonString);
+                PluginResult result = new PluginResult(PluginResult.Status.OK, jsonString);
+                result.setKeepCallback(true);
+                callback.sendPluginResult(result);
             }
 
             @Override
             public void onCompressProcess(String jsonString) {
-                Log.e("onCompressProcess", jsonString);
-                callback.success(jsonString);
+//                Log.e("onCompressProcess", jsonString);
+                PluginResult result = new PluginResult(PluginResult.Status.OK, jsonString);
+                result.setKeepCallback(true);
+                callback.sendPluginResult(result);
             }
 
             @Override
             public void onCompressFailed() {
-                Log.e("onCompressSucceed", "");
-                callback.success("");
+//                Log.e("onCompressFailed", "error");
+                PluginResult result = new PluginResult(PluginResult.Status.ERROR, "error");
+                result.setKeepCallback(true);
+                callback.sendPluginResult(result);
             }
         });
         imageCompressTask.execute(images);
