@@ -47,7 +47,7 @@ public class ImagePicker extends CordovaPlugin {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e(TAG, "onActivityResult");
+//        Log.e(TAG, "onActivityResult");
         LocalImageHelper.getInstance().setResultOk(false);
         //获取选中的图片
         List<LocalImageHelper.LocalFile> files = LocalImageHelper.getInstance().getCheckedItems();
