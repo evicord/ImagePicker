@@ -113,22 +113,42 @@ AndroidManifest.xml中<application>标签添加：
 	);
 				
 3).  返回值
+
+因为有大图压缩功能，所以插件需要时间处理图片尺寸并转存。为了不阻塞UI线程，整个压缩过程放在了新线程中进行，故成功回调分为两种。
+
+第一种：type=1，过程中回调，即处理一张图片就回调该长图片的信息。
 以Json字符串的形式返回数据，格式如下：
 
-	[ /* Json数组的方式返回每张图片信息 */
-    	{ 
-        	"path":"/storage/extSdCard/image/001.jpg",
-        	"height":960,
-        	"width":1080
-    	},
-    	{
-        	"path":"/storage/extSdCard/image/002.jpg",
-        	"height":960,
-        	"width":1080
-    	},
-    	{
-        	"path":"/storage/extSdCard/image/003.jpg",
-        	"height":960,
-        	"width":1080
+	{
+    	"type": 1,
+    	"result": {
+        	"path": "/storage/emulated/0/Image/001.jpg",
+        	"width": 1632,
+        	"height": 1224
     	}
-	]
+	}
+
+第二种：type=2，整个选图流程完毕回调，回调内容为所有选择图片的路径。
+
+以Json字符串的形式返回数据，格式如下：
+
+	{
+    	"type": 0,
+    	"result": [
+        	{
+            	"path": "/storage/emulated/0/Image/001.jpg",
+            	"width": 1632,
+            	"height": 1224
+        	},
+        	{
+            	"path": "/storage/emulated/0/Image/002.jpg",
+            	"width": 1632,
+            	"height": 1224
+        	},
+        	{
+            	"path": "/storage/emulated/0/Image/003.jpg",
+            	"width": 1632,
+            	"height": 1224
+        	}
+    	]
+	}
