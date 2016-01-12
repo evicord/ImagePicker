@@ -189,9 +189,9 @@
         <resource-file src="src/ios/ELCImagePicker/Resources/Overlay.png" />
         <resource-file src="src/ios/ELCImagePicker/Resources/Overlay@2x.png" />
         
-        <framework src="MessageUI.framework" weak="true" />
-        <framework src="ImageIO.framework" weak="true" />
-        <framework src="QuartzCore.framework" weak="true" />
+        <framework src="MessageUI.framework" weak="false" />
+        <framework src="ImageIO.framework" weak="false" />
+        <framework src="QuartzCore.framework" weak="false" />
         
 	</platform>
 </plugin>
