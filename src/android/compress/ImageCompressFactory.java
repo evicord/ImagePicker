@@ -1,4 +1,4 @@
-package com.tyrion.plugin.picker.common;
+package com.tyrion.plugin.picker.compress;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 /**
  * Created by Tyrion on 16/1/8.
@@ -58,7 +57,7 @@ public class ImageCompressFactory {
      * @param pixelH target pixel of height
      * @return
      */
-    public Bitmap ratio(String imgPath, float pixelW, float pixelH) {
+    public ImageInfo ratio(String imgPath, float pixelW, float pixelH) {
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
         // 开始读入图片，此时把options.inJustDecodeBounds 设回true，即只读边不读内容
         newOpts.inJustDecodeBounds = true;
@@ -86,8 +85,16 @@ public class ImageCompressFactory {
         newOpts.inSampleSize = int_be;//设置缩放比例
         // 开始压缩图片，注意此时已经把options.inJustDecodeBounds 设回false了
         bitmap = BitmapFactory.decodeFile(imgPath, newOpts);
+//        Log.e("newOpts.outWidth", newOpts.outWidth + "");
+//        Log.e("newOpts.outHeight", newOpts.outHeight + "");
+
+
+        ImageInfo image = new ImageInfo();
+        image.setBitmap(bitmap);
+        image.setWidth(newOpts.outWidth);
+        image.setHeight(newOpts.outHeight);
         // 压缩好比例大小后再进行质量压缩
-        return bitmap;
+        return image;
     }
 
     /**
@@ -209,9 +216,9 @@ public class ImageCompressFactory {
      * @param needsDelete Whether delete original file after compress
      * @throws FileNotFoundException
      */
-    public void ratioAndGenThumb(String imgPath, String outPath, float pixelW, float pixelH, boolean needsDelete) throws FileNotFoundException {
-        Bitmap bitmap = ratio(imgPath, pixelW, pixelH);
-        storeImage( bitmap, outPath);
+    public int[] ratioAndGenThumb(String imgPath, String outPath, float pixelW, float pixelH, boolean needsDelete) throws FileNotFoundException {
+        ImageInfo image = ratio(imgPath, pixelW, pixelH);
+        storeImage( image.getBitmap(), outPath);
 
         // Delete original file
         if (needsDelete) {
@@ -220,5 +227,9 @@ public class ImageCompressFactory {
                 file.delete();
             }
         }
+        int[] size = new int[2];
+        size[0]=image.getWidth();
+        size[1]=image.getHeight();
+        return size;
     }
 }

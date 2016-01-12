@@ -34,6 +34,7 @@
 		<source-file src="src/android/MyApplication.java" target-dir="src/com/tyrion/plugin/picker" />
 		<source-file src="src/android/AppManager.java" target-dir="src/com/tyrion/plugin/picker" />
 		<source-file src="src/android/common" target-dir="src/com/tyrion/plugin/picker" />
+		<source-file src="src/android/compress" target-dir="src/com/tyrion/plugin/picker" />
 		<source-file src="src/android/ui" target-dir="src/com/tyrion/plugin/picker" />
 		<source-file src="src/android/widget" target-dir="src/com/tyrion/plugin/picker" />
 
