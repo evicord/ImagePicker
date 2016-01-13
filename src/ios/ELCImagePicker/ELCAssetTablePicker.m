@@ -12,6 +12,8 @@
 #import "ELCAlbumPickerController.h"
 #import "ELCImagePickerController.h"
 #import "MWPhotoBrowser.h"
+#import "DeviceMacro.h"
+#import "Operation.h"
 @interface ELCAssetTablePicker ()<UITableViewDataSource,UITableViewDelegate,ELCAssetDelegate,MWPhotoBrowserDelegate>
 @property (nonatomic, assign) NSInteger columns;
 @property (nonatomic, strong) NSMutableArray *elcAssets;
