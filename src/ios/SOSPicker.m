@@ -21,6 +21,23 @@
 
 @synthesize callbackId;
 
+-(void)toBinary:(CDVInvokedUrlCommand*)command
+{
+    NSString *path=command.arguments[0];
+    NSError *error=nil;
+    NSData *data=[NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:&error];
+    CDVPluginResult*pluginResult=nil;
+    if(error)
+    {
+        pluginResult= [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:error.localizedDescription];
+    }
+    else
+    {
+        pluginResult= [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:data];
+    }
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void) getPictures:(CDVInvokedUrlCommand *)command {
 	NSDictionary *options = [command.arguments objectAtIndex: 0];
 
@@ -109,8 +126,9 @@
                 result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
                 break;
             } else {
-                NSDictionary *dict=@{@"path":[[NSURL fileURLWithPath:filePath] absoluteString],@"width":@(fit_size.width),@"height":@(fit_size.height)};
+                NSDictionary *dict=@{@"path":filePath,@"width":@(fit_size.width),@"height":@(fit_size.height)};
                 [resultStrings addObject:dict];
+                
                 /*ios 要修改相册库,不支持先dismiss再获取相册资源
                  NSDictionary *handle_dict=@{@"type":@(1),@"result":dict,@"index":@(i)};
                  CDVPluginResult *handle = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:handle_dict];*/
