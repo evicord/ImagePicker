@@ -11,7 +11,11 @@
 #import "ELCImagePickerController.h"
 #import "ELCAssetTablePicker.h"
 #import "Operation.h"
-#define CDV_PHOTO_PREFIX @"cdv_photo_"
+#import "MBProgressHUD.h"
+
+@interface SOSPicker()
+@property (nonatomic,weak) MBProgressHUD *pro_hud;
+@end
 
 @implementation SOSPicker
 
@@ -49,10 +53,10 @@
 	                     completion:nil];
 }
 
-
-- (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info {
-	CDVPluginResult* result = nil;
-	NSMutableArray *resultStrings = [[NSMutableArray alloc] init];
+-(void)handleImage:(NSArray *)info
+{
+    CDVPluginResult*result=nil;
+    NSMutableArray *resultStrings = [[NSMutableArray alloc] init];
     NSData* data = nil;
     NSError* err = nil;
     ALAsset* asset = nil;
@@ -60,28 +64,21 @@
     NSString* tmpPath =[Operation tmpImagesDirectoryPath];
     NSString *filePath=nil;
     NSInteger i = 0;
-  
-	for (NSDictionary *dict in info) {
+    for (NSDictionary *dict in info) {
         asset = [dict objectForKey:@"ALAsset"];
         // From ELCImagePickerController.m
-
+        
         NSDate *date=[NSDate date];
         filePath=[NSString stringWithFormat:@"%@/%ld_%@", tmpPath,(long)(date.timeIntervalSince1970+i),@"tmpImage"];
         i++;
         
         @autoreleasepool {
             ALAssetRepresentation *assetRep = [asset defaultRepresentation];
-            CGImageRef imgRef = NULL;
+            CGImageRef imgRef = [assetRep fullResolutionImage];
             
             //defaultRepresentation returns image as it appears in photo picker, rotated and sized,
             //so use UIImageOrientationUp when creating our image below.
-            if (picker.returnsOriginalImage) {
-                imgRef = [assetRep fullResolutionImage];
-                orientation = [assetRep orientation];
-            } else {
-                imgRef = [assetRep fullScreenImage];
-            }
-            
+           
             
             UIImage* image = [UIImage imageWithCGImage:imgRef scale:1.0f orientation:orientation];
             UIImageOrientation imageOrientation=image.imageOrientation;
@@ -112,21 +109,74 @@
                 result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
                 break;
             } else {
-
                 NSDictionary *dict=@{@"path":[[NSURL fileURLWithPath:filePath] absoluteString],@"width":@(fit_size.width),@"height":@(fit_size.height)};
                 [resultStrings addObject:dict];
+                /*ios 要修改相册库,不支持先dismiss再获取相册资源
+                 NSDictionary *handle_dict=@{@"type":@(1),@"result":dict,@"index":@(i)};
+                 CDVPluginResult *handle = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:handle_dict];*/
+                
+                BOOL isFinish=NO;
+                if(i==info.count)
+                {
+                    isFinish=YES;
+                }
+                CGFloat temp=(CGFloat)i;
+                CGFloat temp_count=(CGFloat)info.count;
+                CGFloat per=temp/temp_count;
+                [self performSelectorOnMainThread:@selector(updatePro:) withObject:@{@"isFinish":@(isFinish),@"per":@(per)} waitUntilDone:YES];
             }
         }
-
-	}
-	
-	if (nil == result) {
-		result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:resultStrings];
-	}
-
-	[self.viewController dismissViewControllerAnimated:YES completion:nil];
-	[self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
+    }
+    if(result==nil)
+    {
+        NSDictionary *dict=@{@"type":@(0),@"result":resultStrings};
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dict];
+    }
+    [self performSelectorOnMainThread:@selector(SendMsg:) withObject:result waitUntilDone:YES];
 }
+
+-(void)updatePro:(NSDictionary*)dict
+{
+    NSNumber *number=[dict objectForKey:@"per"];
+    NSNumber *isFinish=[dict objectForKey:@"isFinish"];
+    self.pro_hud.progress = number.floatValue;
+    if(isFinish.boolValue)
+    {
+       [self.pro_hud hide:YES];
+       [self.viewController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+-(void)SendMsg:(CDVPluginResult*)handle
+{
+    [self.commandDelegate sendPluginResult:handle callbackId:self.callbackId];
+}
+
+- (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info
+{
+    MBProgressHUD *hud = [self showProgressHUDAddToView:picker.view withLabelText:@"正在加载ing"];
+    self.pro_hud=hud;
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(handleImage:) object:info];
+    [thread start];
+}
+
+-(MBProgressHUD*)showProgressHUDAddToView:(UIView*)view withLabelText:(NSString *)text{
+    return [self showHUDAddToView:view withLabelText:text detailText:nil dimBackground:NO animate:YES mode:MBProgressHUDModeDeterminate];
+}
+
+-(MBProgressHUD*)showHUDAddToView:(UIView*)view withLabelText:(NSString *)text detailText:(NSString*)detailText dimBackground:(BOOL)dimBackground animate:(BOOL)animate mode:(MBProgressHUDMode)mode{
+    
+    MBProgressHUD *hud = [MBProgressHUD HUDForView:view];
+    if (hud == nil) {
+        hud = [MBProgressHUD showHUDAddedTo:view animated:animate];
+    }
+    hud.mode = mode;
+    hud.labelText = text;
+    hud.detailsLabelText = detailText;
+    hud.dimBackground = dimBackground;
+    return hud;
+}
+
 
 - (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker {
 	[self.viewController dismissViewControllerAnimated:YES completion:nil];
