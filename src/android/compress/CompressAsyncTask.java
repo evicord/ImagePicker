@@ -33,6 +33,13 @@ public class CompressAsyncTask extends AsyncTask<List<ImageInfo>, String, String
         String jsonString = null;
         try {
 
+            //检查路径是否存在
+            String foderPath = Environment.getExternalStorageDirectory() + File.separator + ExtraKey.COMPRESS_FODER_NAME + "/";
+            File destDir = new File(foderPath);
+            if (!destDir.exists()) {
+                destDir.mkdirs();
+            }
+
             for (int i = 0; i < images.size(); i++) {
                 ImageInfo image = images.get(i);
                 String path = image.getPath();
@@ -44,7 +51,7 @@ public class CompressAsyncTask extends AsyncTask<List<ImageInfo>, String, String
                 int outputHeight;
                 if(width> ExtraKey.IMAGE_MAX_SIZE || height>ExtraKey.IMAGE_MAX_SIZE){
                     ImageCompressFactory imageCompressFactory = new ImageCompressFactory();
-                    String newPath = Environment.getExternalStorageDirectory() + File.separator + "PanArt/" + getFileName(path) + ".jpg";
+                    String newPath = foderPath + getFileName(path) + ".jpg";
                     int[] size = imageCompressFactory.ratioAndGenThumb(path, newPath, ExtraKey.IMAGE_MAX_SIZE, ExtraKey.IMAGE_MAX_SIZE, false);
                     outputPath = newPath;
                     outputWidth = size[0];
