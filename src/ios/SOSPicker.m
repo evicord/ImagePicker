@@ -174,6 +174,7 @@
 {
     MBProgressHUD *hud = [self showProgressHUDAddToView:picker.view withLabelText:@"正在加载ing"];
     self.pro_hud=hud;
+    [Operation createDirectory];
     NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(handleImage:) object:info];
     [thread start];
 }
