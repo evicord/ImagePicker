@@ -21,6 +21,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,15 +72,16 @@ public class ImagePicker extends CordovaPlugin {
         CompressAsyncTask imageCompressTask = new CompressAsyncTask();
         imageCompressTask.setOnCompressListener(new OnCompressListener() {
             @Override
-            public void onCompressSucceed(String jsonString) {
+            public void onCompressSucceed(JSONObject jsonString) {
 //                Log.e("onCompressSucceed", jsonString);
                 PluginResult result = new PluginResult(PluginResult.Status.OK, jsonString);
                 result.setKeepCallback(true);
+
                 callback.sendPluginResult(result);
             }
 
             @Override
-            public void onCompressProcess(String jsonString) {
+            public void onCompressProcess(JSONObject jsonString) {
 //                Log.e("onCompressProcess", jsonString);
                 PluginResult result = new PluginResult(PluginResult.Status.OK, jsonString);
                 result.setKeepCallback(true);
