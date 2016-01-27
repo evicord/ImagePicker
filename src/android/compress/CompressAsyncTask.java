@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by Tyrion on 16/1/9.
  */
-public class CompressAsyncTask extends AsyncTask<List<ImageInfo>, String, String> {
+public class CompressAsyncTask extends AsyncTask<List<ImageInfo>, JSONObject, JSONObject> {
 
     OnCompressListener onCompressListener;
 
@@ -26,11 +26,12 @@ public class CompressAsyncTask extends AsyncTask<List<ImageInfo>, String, String
     }
 
     @Override
-    protected String doInBackground(List<ImageInfo>... lists) {
+    protected JSONObject doInBackground(List<ImageInfo>... lists) {
         List<ImageInfo> images = lists[0];
 
         JSONArray jsonarray = new JSONArray();
-        String jsonString = null;
+//        String jsonString = null;
+        JSONObject resultImages = null;
         try {
 
             //检查路径是否存在
@@ -74,13 +75,13 @@ public class CompressAsyncTask extends AsyncTask<List<ImageInfo>, String, String
                 progress.put("type", 1);
                 progress.put("result", outputImage);
 
-                publishProgress(progress.toString());
+                publishProgress(progress);
             }
 
-            JSONObject resultImages = new JSONObject();
+            resultImages = new JSONObject();
             resultImages.put("type", 0);
             resultImages.put("result", jsonarray);
-            jsonString = resultImages.toString();
+//            jsonString = resultImages.toString();
         } catch (JSONException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -88,7 +89,7 @@ public class CompressAsyncTask extends AsyncTask<List<ImageInfo>, String, String
             e.printStackTrace();
         }
 
-        return jsonString;
+        return resultImages;
     }
 
     @Override
@@ -97,7 +98,7 @@ public class CompressAsyncTask extends AsyncTask<List<ImageInfo>, String, String
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(JSONObject result) {
         if(result!=null){
             onCompressListener.onCompressSucceed(result);
         }else{
@@ -111,7 +112,7 @@ public class CompressAsyncTask extends AsyncTask<List<ImageInfo>, String, String
      * onProgressUpdate是在UI线程中执行，所有可以对UI空间进行操作
      */
     @Override
-    protected void onProgressUpdate(String... values) {
+    protected void onProgressUpdate(JSONObject... values) {
         onCompressListener.onCompressProcess(values[0]);
     }
 
