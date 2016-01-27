@@ -109,13 +109,16 @@
             
             CGFloat width=image.size.width;
             CGFloat height=image.size.height;
+            
             if(width>height)
             {
                 height=image.size.height>=2048?2048:image.size.height;
+                width=(image.size.width*height)/image.size.height;
             }
             else
             {
                 width=image.size.width>=2048?2048:image.size.width;
+                height=(width*image.size.height)/image.size.width;
             }
             
             CGSize fit_size=CGSizeMake(width, height);
