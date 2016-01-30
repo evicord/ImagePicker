@@ -92,7 +92,8 @@
         @autoreleasepool {
             ALAssetRepresentation *assetRep = [asset defaultRepresentation];
             CGImageRef imgRef = [assetRep fullResolutionImage];
-            
+            orientation =(UIImageOrientation)[assetRep orientation];;
+          
             //defaultRepresentation returns image as it appears in photo picker, rotated and sized,
             //so use UIImageOrientationUp when creating our image below.
            
