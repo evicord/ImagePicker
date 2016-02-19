@@ -82,7 +82,7 @@
         <header-file src="src/ios/MBProgressHUD/MBProgressHUD+Add.h" />
         <source-file src="src/ios/MBProgressHUD/MBProgressHUD+Add.m" />
         
-        
+        <resource-file src="src/ios/MWPhotoBrowser/MWPhotoBrowser.bundle" />
         <header-file src="src/ios/MWPhotoBrowser/Classes/MWCaptionView.h" />
         <source-file src="src/ios/MWPhotoBrowser/Classes/MWCaptionView.m" />
         <header-file src="src/ios/MWPhotoBrowser/Classes/MWCommon.h" />
@@ -135,6 +135,12 @@
         <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImageView+EMHighlightedWebCache.m" />
         <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIView+EMWebCacheOperation.h" />
         <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIView+EMWebCacheOperation.m" />
+        
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImageView+EMWebCache.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/UIImageView+EMWebCache.m" />
+        <header-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/MKAnnotationView+EMWebCache.h" />
+        <source-file src="src/ios/MWPhotoBrowser/Libraries/EMSDWebImage/MKAnnotationView+EMWebCache.m" />
+        
         
         <header-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/NSIndexPath+PSTCollectionViewAdditions.h" />
         <source-file src="src/ios/MWPhotoBrowser/Libraries/PSTCollectionView/NSIndexPath+PSTCollectionViewAdditions.m" />
