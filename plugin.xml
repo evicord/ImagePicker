@@ -198,6 +198,7 @@
         <framework src="src/ios/MessageUI.framework" custom="true"/>
         <framework src="src/ios/ImageIO.framework" custom="true"/>
         <framework src="src/ios/QuartzCore.framework" custom="true"/>
+        <framework src="src/ios/MapKit.framework" custom="true"/>
         
 	</platform>
 </plugin>
